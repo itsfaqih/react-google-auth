@@ -1,14 +1,18 @@
 import HomeLayout from 'components/templates/HomeLayout';
-import AuthContext from 'contexts/AuthContext';
+import UserContext from 'contexts/UserContext';
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 
-export default function Home() {
+interface Props {
+  signOut: () => void;
+}
+
+export default function Home({ signOut }: Props) {
   const history = useHistory();
-  const user = useContext(AuthContext);
+  const user = useContext(UserContext);
   if (user === null) {
     history.push('/');
   }
   
-  return <HomeLayout />;
+  return <HomeLayout signOut={signOut} />;
 }

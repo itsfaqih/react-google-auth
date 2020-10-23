@@ -1,7 +1,7 @@
 import Landing from 'pages/Landing';
 import Home from 'pages/Home';
 import { Switch, BrowserRouter as Router, Route } from 'react-router-dom';
-import AuthContext from 'contexts/AuthContext';
+import UserContext from 'contexts/UserContext';
 import React, { useState } from 'react';
 import { ProfileObj } from 'types/user';
 
@@ -9,20 +9,21 @@ function App() {
   const [user, setUser] = useState<ProfileObj | null>(null);
 
   const authenticate = (userData: ProfileObj) => setUser(userData);
+  const signOut = () => setUser(null);
 
   return (
-    <AuthContext.Provider value={user}>
-      <Router>
+    <UserContext.Provider value={user}>
+      <Router basename={process.env.PUBLIC_URL}>
         <Switch>
           <Route path="/home">
-            <Home />
+            <Home signOut={signOut}/>
           </Route>
           <Route path="/">
             <Landing authenticate={authenticate} />
           </Route>
         </Switch>
       </Router>
-    </AuthContext.Provider>
+    </UserContext.Provider>
   );
 }
 

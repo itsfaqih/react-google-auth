@@ -1,5 +1,5 @@
 import LandingLayout from 'components/templates/LandingLayout';
-import AuthContext from 'contexts/AuthContext';
+import UserContext from 'contexts/UserContext';
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ProfileObj } from 'types/user';
@@ -10,7 +10,7 @@ interface Props {
 
 export default function Landing({ authenticate }: Props) {
   const history = useHistory();
-  const user = useContext(AuthContext);
+  const user = useContext(UserContext);
 
   if (user !== null) {
     history.push('/home');

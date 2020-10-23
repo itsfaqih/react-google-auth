@@ -2,6 +2,7 @@
   "name": "react-google-auth",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://itsfaqih.github.io/react-google-auth",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -14,6 +15,7 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.6",
     "classnames": "^2.2.6",
+    "gh-pages": "^3.1.0",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-google-login": "^5.1.22",
@@ -24,6 +26,8 @@
   },
   "scripts": {
     "build:style": "tailwindcss build src/styles/tailwind.css -o src/styles/index.css",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
