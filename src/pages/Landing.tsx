@@ -1,16 +1,7 @@
 import LandingLayout from 'components/templates/LandingLayout';
-import UserContext from 'contexts/UserContext';
-import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import React from 'react';
 
 export default function Landing() {
-  const history = useHistory();
-  const user = useContext(UserContext);
-
-  if (user !== null) {
-    history.push('/home');
-  }
-  
   return (
     <LandingLayout
       data={{
