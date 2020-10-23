@@ -1,49 +1,60 @@
 import Landing from 'pages/Landing';
 import Home from 'pages/Home';
-import { Switch, BrowserRouter as Router, Route } from 'react-router-dom';
+import { Switch, BrowserRouter as Router, Route, Redirect, useHistory } from 'react-router-dom';
 import UserContext from 'contexts/UserContext';
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ProfileObj } from 'types/user';
-import {
-  GoogleLoginResponse,
-  GoogleLoginResponseOffline,
-  useGoogleLogin,
-} from 'react-google-login';
+import GoogleAuthContext from 'contexts/GoogleAuthContext';
 
 function App() {
   const [user, setUser] = useState<ProfileObj | null>(null);
+  const [loadedAuth2, setLoadedAuth2] = useState(false);
 
-  const { signIn, loaded } = useGoogleLogin({
-    clientId: '671070534468-qhp2q27a8oavg3lf45hl1dc06koppvl7.apps.googleusercontent.com',
-    isSignedIn: true,
-    onSuccess: res => {
-      const response = res as GoogleLoginResponse;
-      const responseOffline = res as GoogleLoginResponseOffline;
+  const auth2 = useMemo<gapi.auth2.GoogleAuth | null>(() => {
+    if (loadedAuth2) {
+      return gapi.auth2.init({
+        client_id: '671070534468-qhp2q27a8oavg3lf45hl1dc06koppvl7.apps.googleusercontent.com',
+      });
+    }
+    return null;
+  }, [loadedAuth2]);
 
-      if (responseOffline.code) {
-      } else if (response.profileObj) {
-        setUser(response.profileObj);
-      }
-    },
-  });
+  useEffect(() => {
+    gapi.load('auth2', () => {
+      setLoadedAuth2(true);
+    });
+  }, []);
 
-  if (loaded) {
-    signIn();
-  }
+  useEffect(() => {
+    if (auth2 !== null) {
+      auth2.currentUser.listen(googleUser => {
+        if (googleUser.isSignedIn()) {
+          const profile = googleUser.getBasicProfile();
+          setUser({
+            email: profile.getEmail(),
+            name: profile.getName(),
+          });
+        } else {
+          setUser(null);
+        }
+      });
+    }
+  }, [auth2]);
 
   return (
-    <UserContext.Provider value={user}>
-      <Router basename={process.env.PUBLIC_URL}>
-        <Switch>
-          <Route path="/home">
-            <Home />
-          </Route>
-          <Route path="/">
-            <Landing />
-          </Route>
-        </Switch>
-      </Router>
-    </UserContext.Provider>
+    <GoogleAuthContext.Provider value={auth2}>
+      <UserContext.Provider value={user}>
+        <Router basename={process.env.PUBLIC_URL}>
+          <Switch>
+            <Route render={() => (user !== null ? <Home /> : <Redirect to="/" />)} path="/home" />
+            <Route
+              render={() => (user === null ? <Landing /> : <Redirect to="/home" />)}
+              path="/"
+            />
+          </Switch>
+        </Router>
+      </UserContext.Provider>
+    </GoogleAuthContext.Provider>
   );
 }
 
