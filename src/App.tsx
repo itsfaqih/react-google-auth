@@ -14,7 +14,7 @@ function App() {
   const [user, setUser] = useState<ProfileObj | null>(null);
 
   const { signIn, loaded } = useGoogleLogin({
-    clientId: '',
+    clientId: '671070534468-qhp2q27a8oavg3lf45hl1dc06koppvl7.apps.googleusercontent.com',
     isSignedIn: true,
     onSuccess: res => {
       const response = res as GoogleLoginResponse;
