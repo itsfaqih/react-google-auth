@@ -4,17 +4,13 @@ import UserContext from 'contexts/UserContext';
 import React, { useContext } from 'react';
 import { ProfileObj } from 'types/user';
 
-interface Props {
-  signOut: () => void;
-}
-
-export default function HomeLayout({ signOut }: Props) {
+export default function HomeLayout() {
   const user = useContext(UserContext) as ProfileObj;
   const initialItems: string[] = [];
 
   return (
     <>
-      <Navbar signOut={signOut}/>
+      <Navbar />
       <div className="mt-8">
         {/* <ToDoList initialItems={initialItems} /> */}
         <div className="p-4 bg-white rounded-md shadow">

@@ -8,14 +8,8 @@ import GoogleLogin, {
   GoogleLogout,
 } from 'react-google-login';
 import { useHistory } from 'react-router-dom';
-import { ProfileObj } from 'types/user';
 
-interface Props {
-  authenticate?: (userData: ProfileObj) => void;
-  signOut?: () => void;
-}
-
-export default function Navbar({ authenticate, signOut }: Props) {
+export default function Navbar() {
   const user = useContext(UserContext);
   const history = useHistory();
 
@@ -24,14 +18,8 @@ export default function Navbar({ authenticate, signOut }: Props) {
     const responseOffline = res as GoogleLoginResponseOffline;
 
     if (response.profileObj) {
-      if (authenticate) {
-        authenticate(response.profileObj);
-        history.push('/home');
-      } else {
-        console.error("There's no authenticate function!");
-      }
+      history.push('/home');
     } else if (responseOffline.code) {
-      // authenticate(res.code)
     }
   }
 
@@ -43,9 +31,7 @@ export default function Navbar({ authenticate, signOut }: Props) {
   };
 
   const logout = () => {
-    if (signOut) {
-      signOut();
-    }
+    history.push('/');
   };
 
   return (

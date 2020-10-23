@@ -2,13 +2,8 @@ import LandingLayout from 'components/templates/LandingLayout';
 import UserContext from 'contexts/UserContext';
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { ProfileObj } from 'types/user';
 
-interface Props {
-  authenticate: (userData: ProfileObj) => void;
-}
-
-export default function Landing({ authenticate }: Props) {
+export default function Landing() {
   const history = useHistory();
   const user = useContext(UserContext);
 
@@ -28,7 +23,6 @@ export default function Landing({ authenticate }: Props) {
           desc: 'Just your typical to do application',
         },
       }}
-      action={{ authenticate }}
     />
   );
 }

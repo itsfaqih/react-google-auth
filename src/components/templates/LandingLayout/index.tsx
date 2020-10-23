@@ -8,18 +8,14 @@ interface Props {
   data: {
     hero: HeroMoleculeProps;
   };
-  action: {
-    authenticate: (userData: ProfileObj) => void;
-  }
 }
 
-export default function LandingLayout({ data, action }: Props) {
+export default function LandingLayout({ data }: Props) {
   const { hero } = data;
-  const { authenticate } = action;
 
   return (
     <>
-      <Navbar authenticate={authenticate}/>
+      <Navbar />
       <Hero text={hero.text} desc={hero.desc} />
     </>
   );

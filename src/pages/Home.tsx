@@ -3,16 +3,12 @@ import UserContext from 'contexts/UserContext';
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 
-interface Props {
-  signOut: () => void;
-}
-
-export default function Home({ signOut }: Props) {
+export default function Home() {
   const history = useHistory();
   const user = useContext(UserContext);
   if (user === null) {
     history.push('/');
   }
   
-  return <HomeLayout signOut={signOut} />;
+  return <HomeLayout />;
 }
